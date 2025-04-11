@@ -1,0 +1,64 @@
+﻿@model Rotina
+@{
+    ViewData["Title"] = "Gerenciar Rotina";
+}
+
+<h5>Gerenciar Rotina</h5>
+@if (Model.Tarefas.Count == 0)
+{
+    <h2>Adicione uma Tarefa para Começar!</h2>
+}
+<ul class="list-group mb-4">
+    @for (int i = 0; i < Model.Tarefas.Count; i++)
+    {
+        var tarefa = Model.Tarefas[i];
+        <li class="list-group-item px-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- left -->
+                <div class="flex-grow-1">
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <strong class="me-3" style="min-width: 150px;">@tarefa.Nome</strong>
+
+                        @if (tarefa.Repetir)
+                        {
+                            <span class="text-muted" style="min-width: 150px;">Repetindo: Sim</span>
+                            <span class="text-muted">Dias: @string.Join(", ", tarefa.DaystoDias)</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted" style="min-width: 150px;">Repetindo: Não</span>
+                            <span class="text-muted">Dia: @tarefa.DataEspecifica?.ToString("dd/MM/yyyy (dddd)")</span>
+                        }
+                    </div>
+                </div>
+
+                <!-- right -->
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-info"
+                            data-bs-toggle="collapse" data-bs-target="#descricao-@i"
+                            aria-expanded="false" aria-controls="descricao-@i">
+                        Ver Descrição
+                    </button>
+
+                    <form asp-controller="Rotina" asp-action="RemoverTarefa" method="post" class="d-inline">
+                        <input type="hidden" name="indice" value="@i" />
+                        <button type="submit" class="btn btn-sm btn-danger">X</button>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- description -->
+            <div class="collapse mt-2" id="descricao-@i">
+                <div class="card card-body bg-light border-0">
+                    @tarefa.Descricao
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+<div class="d-flex justify-content-end gap-2">
+    <a asp-action="AddTarefa" asp-controller="Rotina" class="btn btn-success">Adicionar Tarefa</a>
+    <a class="btn btn-danger" asp-controller="Family" asp-action="Index">Voltar</a>
+</div>

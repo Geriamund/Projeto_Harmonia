@@ -1,0 +1,12 @@
+﻿@model Family
+@{
+    ViewData["Title"] = "Gerenciar";
+}
+<div class="text-center">
+    <h2>Gerenciar Familia</h2>
+</div>
+<div class="d-flex justify-content-center gap-3 my-4">
+    <a class="btn btn-primary w-100" asp-controller="Family" asp-action="GerenciarMembros">Gerenciar Membros</a>
+    <a class="btn btn-success w-100" asp-controller="Family" asp-action="GerenciarRotina">Alterar Rotina</a>
+</div>
+<a class="btn btn-danger w-20" asp-controller="Main" asp-action="Index">Voltar</a>

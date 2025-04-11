@@ -1,0 +1,90 @@
+﻿@using System.Text.Json
+@{
+    var usuarioJson = Context.Session.GetString("UsuarioLogado");
+    var usuario = string.IsNullOrEmpty(usuarioJson) ? null : JsonSerializer.Deserialize<UserModel>(usuarioJson);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Projeto_Harmonia</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Projeto_Harmonia.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark border-bottom box-shadow mb-3" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Projeto Harmonia</a>
+
+                <!--DROPDOWN-->
+
+                <div class="dropdown d-sm-none ms-auto">
+                    <button class="btn text-white" type="button" id="dropdownMenuMobile" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="dropdownMenuMobile">
+                        @if (usuario == null)
+                        {
+                            <li><a class="dropdown-item text-white" asp-controller="Login" asp-action="Index">Login</a></li>
+                            <li><a class="dropdown-item text-white" asp-controller="Cadastro" asp-action="Index">Cadastrar</a></li>
+                        }
+                        else
+                        {
+                            <li><a class="dropdown-item text-white" asp-controller="Painel" asp-action="Index">Painel</a></li>
+                            <form asp-controller="Login" asp-action="Logout" method="post" class="d-inline">
+                            <li><button type="submit" class="dropdown-item text-white">Sair</button></li>
+                            </form>
+                        }
+                    </ul>
+                </div>
+
+                <!--NavBar-->
+                <div class="collapse navbar-collapse d-none d-sm-flex justify-content-end">
+                    <ul class="navbar-nav gap-2">
+                        @if (usuario == null)
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-light" asp-controller="Login" asp-action="Index">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary" asp-controller="Cadastro" asp-action="Index">Cadastrar</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-light" asp-controller="Painel" asp-action="Index">Painel</a>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Login" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger">Sair</button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Projeto_Harmonia - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

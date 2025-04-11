@@ -1,0 +1,85 @@
+﻿@model Tarefa
+@{
+    ViewData["Title"] = "Rotina";
+}
+<div class="container mt-5" style="max-width: 450px;">
+    <form asp-action="SalvarTarefa" asp-controller="Rotina" method="post">
+        <div class="mb-3">
+            <label asp-for="Nome" class="form-label">Nome da Tarefa</label>
+            <input asp-for="Nome" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Descricao" class="form-label">Descrição</label>
+            <textarea asp-for="Descricao" class="form-control"></textarea>
+        </div>
+
+        <div class="form-check mb-3">
+            <input asp-for="Repetir" class="form-check-input" type="checkbox" id="repetirCheck" onchange="toggleRepetir()">
+            <label class="form-check-label" for="repetirCheck">Repetir</label>
+        </div>
+
+        @*  <div id="diasRepetirDiv" style="display: none;">
+        <label>Dias para repetir:</label><br />
+        @{
+            var dias = Enum.GetValues<DayOfWeek>();
+            foreach (var dia in dias)
+            {
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" name="DiasRepetir" value="@dia" id="dia-@dia" />
+                    <label class="form-check-label" for="dia-@dia">@dia.ToString().Substring(0, 1)</label>
+                </div>
+            }
+        }
+    </div> *@
+        <div id="diasRepetirDiv" style="display: none;">
+            <div id="diasSemana">
+                <button type="button" class="btn btn-outline-success dia-btn" data-dia="Sunday">D</button>
+                <button type="button" class="btn btn-outline-success dia-btn" data-dia="Monday ">S</button>
+                <button type="button" class="btn btn-outline-success dia-btn" data-dia="Tuesday ">T</button>
+                <button type="button" class="btn btn-outline-success dia-btn" data-dia="Wednesday">Q</button>
+                <button type="button" class="btn btn-outline-success dia-btn" data-dia="Thursday">Q</button>
+                <button type="button" class="btn btn-outline-success dia-btn" data-dia="Friday">S</button>
+                <button type="button" class="btn btn-outline-success dia-btn" data-dia="Saturday">S</button>
+            </div>
+        </div>
+
+        <div id="diasSelecionadosInputs"></div>
+
+        <div id="dataEspecificaDiv" style="display: block;">
+            <label asp-for="DataEspecifica" class="form-label">Data Específica</label>
+            <input asp-for="DataEspecifica" class="form-control" type="date" />
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Criar Tarefa</button>
+            <a class="btn btn-danger" asp-controller="Family" asp-action="GerenciarRotina">Voltar</a>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        function toggleRepetir() {
+            const check = document.getElementById("repetirCheck");
+            document.getElementById("diasRepetirDiv").style.display = check.checked ? "block" : "none";
+            document.getElementById("dataEspecificaDiv").style.display = check.checked ? "none" : "block";
+        }
+            document.querySelectorAll(".dia-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const dia = btn.getAttribute("data-dia");
+                btn.classList.toggle("ativo");
+
+                if (btn.classList.contains("ativo")) {
+                    const input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "DiasRepetir";
+                    input.value = dia;
+                    input.id = `input-dia-${dia}`;
+                    document.getElementById("diasSelecionadosInputs").appendChild(input);
+                } else {
+                    document.getElementById(`input-dia-${dia}`)?.remove();
+                }
+            });
+        });
+    </script>
+}

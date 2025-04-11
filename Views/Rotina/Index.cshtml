@@ -1,0 +1,50 @@
+﻿@model List<TarefaDia>
+@{
+    var hoje = DateTime.Today;
+    int totalDias = Model.Count;
+    int diasPorLinha = 7;
+    int linhas = (int)Math.Ceiling((double)totalDias / diasPorLinha);
+}
+
+<div class="container">
+    <h2 class="mb-4">Calendário de Tarefas</h2>
+
+    @for (int linha = 0; linha < linhas; linha++)
+    {
+        <div class="row row-cols-7 g-3 mb-3">
+            @for (int i = 0; i < diasPorLinha; i++)
+            {
+                int index = linha * diasPorLinha + i;
+                if (index >= totalDias)
+                {
+                    <div class="col">
+                        <div class="p-2 border rounded h-100 text-center bg-light">
+                        </div>
+                    </div>
+                    if (i == 6)
+                    break;
+                    continue;
+                }
+
+                var dia = Model[index];
+                var ehHoje = dia.Data.Date == hoje;
+                var corFundo = ehHoje ? "bg-warning border-dark" : "bg-light";
+                <div class="col">
+                    <div class="p-2 border rounded h-100 @corFundo text-center">
+                        <div class="fw-bold">@dia.Data.ToString("ddd", new System.Globalization.CultureInfo("pt-BR"))</div>
+                        <div>@dia.Data.ToString("dd/MM")</div>
+                        <ul class="list-unstyled mt-2">
+                            @foreach (var tarefa in dia.Tarefas)
+                            {
+                                <li><span class="badge bg-primary text-wrap">@tarefa.Nome</span></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    <a class="btn btn-danger w-20 mt-4" asp-controller="Main" asp-action="Index">Voltar</a>
+</div>
+
+

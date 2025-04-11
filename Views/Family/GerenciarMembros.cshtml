@@ -1,0 +1,100 @@
+﻿@model Family
+
+@{
+    ViewData["Title"] = "Gerenciar Membros";
+}
+<div class="container mt-5" style="max-width: 400px;">
+    <h1>Gerenciar Membros</h1>
+    <form asp-controller="Family" asp-action="SalvarMembros" method="post">
+
+        <ul id="listaMembros" class="list-group mb-3">
+            @for (int i = 0; i < Model.Membros.Count; i++)
+            {
+                <li class="list-group-item p-0 rounded-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control border-0 rounded-0 bg-transparent" value="@Model.Membros[i]" readonly>
+                        <button type="button" class="btn btn-danger " onclick="removerMembro(this, @i)">X</button>
+                    </div>
+                </li>
+                <input type="hidden" name="Membros[]" id="Member-@i" value="@Model.Membros[i]" />
+            }
+
+        </ul>
+
+        <div id="membrosHiddenInputs"></div>
+
+
+        <div class="mb-3">
+            <label for="novoMembro" class="form-label">Adicionar membro (nome):</label>
+            <div class="input-group">
+                <input type="text" id="novoMembro" class="form-control" />
+                <button type="button" class="btn btn-success" onclick="adicionarMembro()">+</button>
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.Nome)
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success w-50">Salvar</button>
+            <a class="btn btn-danger w-50" asp-controller="Family" asp-action="Index">Voltar</a>
+        </div>
+
+    </form>
+    <div id="avisoMudanca" class="alert alert-warning d-none" role="alert">
+        Há alterações não salvas!
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+            let changes = 0;
+            let mCount = 0;
+
+            function adicionarMembro() {
+
+                const input = document.getElementById("novoMembro");
+                const name = input.value.trim();
+
+                if (name === "") {
+                    alert("Digite um nome válido!");
+                    return;
+                }
+
+                const lista = document.getElementById("listaMembros");
+                mCount = lista.childElementCount;
+                const item = document.createElement("li");
+                item.className = "list-group-item p-0 rounded-0";
+                item.innerHTML = `<div class="input-group"> <input type="text " class="form-control border-0 rounded-0 bg-transparent" value="${name}" readonly> <button type="button" class="btn btn-danger " onclick="removerMembro(this, ${mCount})">X</button> </div>`;
+                lista.appendChild(item);
+
+                // // Hidden input for bind
+                const hiddenInputsDiv = document.getElementById("membrosHiddenInputs");
+                const inputHidden = document.createElement("input");
+                inputHidden.type = "hidden";
+                inputHidden.name = `Membros[]`;
+                inputHidden.value = name;
+                inputHidden.id = `Member-${mCount}`;
+                hiddenInputsDiv.appendChild(inputHidden);
+                document.getElementById("avisoMudanca").classList.remove("d-none");
+                input.value = "";
+                //input.focus();
+            }
+            function removerMembro(button, index) {
+
+                const li = button.closest("li");
+
+
+                if (li){
+                changes ++;
+                li.remove();
+                document.getElementById("avisoMudanca").classList.remove("d-none");
+                }
+                
+                const input = document.getElementById(`Member-${index}`);
+                if (input) input.remove();
+            }
+    </script>
+}
+
+
+
