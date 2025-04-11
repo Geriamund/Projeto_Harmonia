@@ -39,8 +39,8 @@ namespace Projeto_Harmonia.Controllers
 		[HttpPost]
 		public IActionResult Logout()
 		{
-			//HttpContext.Session.Clear();
-			HttpContext.Session.Remove("UsuarioLogado");
+			HttpContext.Session.Clear();
+			//HttpContext.Session.Remove("UsuarioLogado");
 			return RedirectToAction("Index", "Home");
 		}
 	}
