@@ -9,8 +9,13 @@ namespace Projeto_Harmonia.Controllers
 	public class CadastroController : Controller
 	{
 		private readonly PHDbContext _db;
+		private readonly PasswordHasher<User> _passH;
 
-		public CadastroController(PHDbContext context) => _db = context;
+		public CadastroController(PHDbContext context)
+		{
+			_db = context;
+			_passH = new PasswordHasher<User>();
+		}
 
 		public IActionResult Index()
 		{
@@ -21,13 +26,14 @@ namespace Projeto_Harmonia.Controllers
 			}
 			return View();
 		}
+
 		[HttpPost]
 		public async Task<IActionResult> CadastroUser(CadastroViewModel cadModel)
 		{
 			if (!ModelState.IsValid) return View(cadModel);
 
 			//Encriptar senha antes de salva no db
-			string hashedSenha = new PasswordHasher<User>().HashPassword(null, cadModel.Senha);
+			string hashedSenha = _passH.HashPassword(null, cadModel.Senha);
 
 			var novoUsuario = new User(cadModel.Nome, cadModel.Email, hashedSenha);
 

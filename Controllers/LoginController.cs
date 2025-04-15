@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Projeto_Harmonia.Models;
 using System.Text.Json;
 
@@ -6,6 +8,15 @@ namespace Projeto_Harmonia.Controllers
 {
 	public class LoginController : Controller
 	{
+		private readonly PHDbContext _db;
+		private readonly PasswordHasher<User> _passH;
+
+		public LoginController(PHDbContext context)
+		{
+			_db = context;
+			_passH = new PasswordHasher<User>();
+		}
+
 		public IActionResult Index()
 		{
 			var usuarioJson = HttpContext.Session.GetString("UsuarioLogado");
@@ -14,6 +25,25 @@ namespace Projeto_Harmonia.Controllers
 				return RedirectToAction("Index", "Main");
 			}
 			return View();
+		}
+
+		public async Task<IActionResult> Login(LoginViewModel logModel)
+		{
+			var usuario = await _db.Users.FirstOrDefaultAsync(user => user.Email == logModel.Email);
+			if (usuario == null)
+			{
+				TempData["Erro"] = "Usuário não encontrado.";
+				return RedirectToAction("Index", "Login");
+			}
+
+			var resultado = _passH.VerifyHashedPassword(usuario, usuario.Senha, logModel.Senha);
+			if (resultado == PasswordVerificationResult.Success)
+			{
+				HttpContext.Session.SetString("UsuarioLogado", JsonSerializer.Serialize(usuario));
+				return RedirectToAction("Index", "Main");
+			}
+			TempData["Erro"] = "Senha incorreta.";
+			return RedirectToAction("Index", "Login");
 		}
 
 		[HttpPost]
@@ -40,7 +70,6 @@ namespace Projeto_Harmonia.Controllers
 		public IActionResult Logout()
 		{
 			HttpContext.Session.Clear();
-			//HttpContext.Session.Remove("UsuarioLogado");
 			return RedirectToAction("Index", "Home");
 		}
 	}

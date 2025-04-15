@@ -1,5 +1,5 @@
 # Projeto_Harmonia
-APP web para matéria PROJETO INTEGRADOR DE TECNOLOGIA DA INFORMAÇÃO II módulo 2
+APP web para matéria PROJETO INTEGRADOR DE TECNOLOGIA DA INFORMAÇÃO II
 
 ## Tecnologias Utilizadas
 
