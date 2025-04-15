@@ -11,7 +11,7 @@ namespace Projeto_Harmonia.Controllers
 			var usuarioJson = HttpContext.Session.GetString("UsuarioLogado");
 			if (usuarioJson == null)
 				return RedirectToAction("Index", "Login");
-			var usuario = JsonSerializer.Deserialize<UserModel>(usuarioJson);
+			var usuario = JsonSerializer.Deserialize<User>(usuarioJson);
 
 			return View(usuario);
 		}
@@ -20,7 +20,7 @@ namespace Projeto_Harmonia.Controllers
 			var usuarioJson = HttpContext.Session.GetString("UsuarioLogado");
 			if (usuarioJson == null)
 				return RedirectToAction("Index", "Login");
-			var usuario = JsonSerializer.Deserialize<UserModel>(usuarioJson);
+			var usuario = JsonSerializer.Deserialize<User>(usuarioJson);
 			var fRVM = new FamRegViewModel();
 			return View(fRVM);
 		}
@@ -29,7 +29,7 @@ namespace Projeto_Harmonia.Controllers
 			var usuarioJson = HttpContext.Session.GetString("UsuarioLogado");
 			if (usuarioJson == null)
 				return RedirectToAction("Index", "Login");
-			var usuario = JsonSerializer.Deserialize<UserModel>(usuarioJson);
+			var usuario = JsonSerializer.Deserialize<User>(usuarioJson);
 
 			return View();
 		}

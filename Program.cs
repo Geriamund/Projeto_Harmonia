@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using System;
+
 namespace Projeto_Harmonia
 {
     public class Program
@@ -18,11 +21,13 @@ namespace Projeto_Harmonia
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
+            // Add database context com injection
+            builder.Services.AddDbContext<PHDbContext>(options => options.UseSqlite("Data Source=wwwroot/db/phData.db"));
 
-			var app = builder.Build();
+            var app = builder.Build();
 
-			// Session support
-			app.UseSession();
+            // Session support
+            app.UseSession();
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())
@@ -34,11 +39,8 @@ namespace Projeto_Harmonia
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

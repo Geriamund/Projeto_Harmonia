@@ -1,7 +1,7 @@
 ﻿@using System.Text.Json
 @{
     var usuarioJson = Context.Session.GetString("UsuarioLogado");
-    var usuario = string.IsNullOrEmpty(usuarioJson) ? null : JsonSerializer.Deserialize<UserModel>(usuarioJson);
+    var usuario = string.IsNullOrEmpty(usuarioJson) ? null : JsonSerializer.Deserialize<User>(usuarioJson);
 }
 
 <!DOCTYPE html>

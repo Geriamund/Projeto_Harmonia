@@ -1,5 +1,5 @@
 ﻿@using System.Text.Json
-@model UserModel
+@model User
 @{
     ViewData["Title"] = "Main Page";
     var familyJson = Context.Session.GetString("FamiliaRegistrada");
@@ -10,7 +10,6 @@
 <div class="text-center">
     <h2>Bem-vindo, @Model.Nome!</h2>
     <p>Email: @Model.Email</p>
-    <p>Nível: @Model.Nivel</p>
 </div>
 <div class="d-flex justify-content-center gap-3 my-4">
     <a class="btn btn-primary w-100" asp-controller="Main" asp-action="FamReg">Registrar Família</a>

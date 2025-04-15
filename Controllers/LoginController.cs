@@ -19,11 +19,11 @@ namespace Projeto_Harmonia.Controllers
 		[HttpPost]
 		public IActionResult LoginComoAdmin()
 		{
-			var usuario = new UserModel
+			var usuario = new User
 			{
 				Nome = "Administrador",
 				Email = "admin@teste.com",
-				Nivel = "Admin"
+				Senha = "admin123"
 			};
 
 			HttpContext.Session.SetString("UsuarioLogado", JsonSerializer.Serialize(usuario));
