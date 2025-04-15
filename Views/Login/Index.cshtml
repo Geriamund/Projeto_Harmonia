@@ -1,5 +1,12 @@
 ﻿@model LoginViewModel
 
+@if (TempData["SucessMS"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SucessMS"]
+    </div>
+}
+
 <div class="container mt-5" style="max-width: 400px;">
     <h2 class="text-center mb-4">Login</h2>
 

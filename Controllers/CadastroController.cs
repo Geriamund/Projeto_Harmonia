@@ -34,7 +34,9 @@ namespace Projeto_Harmonia.Controllers
 			_db.Users.Add(novoUsuario);
 			await _db.SaveChangesAsync();
 
-			return RedirectToAction("Index", "Main");
+
+			TempData["SucessMS"] = "Cadastro realizado com sucesso!";
+			return RedirectToAction("Index", "Login");
 		}
 
 	}
