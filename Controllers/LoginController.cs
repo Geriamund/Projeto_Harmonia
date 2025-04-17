@@ -49,11 +49,12 @@ namespace Projeto_Harmonia.Controllers
 
 				if (usuario.Family != null)
 				{
+					var membros = await _db.Users.Where(u => u.FamilyId == usuario.Family.Id).Select(u => u.Nome).ToListAsync();
 					var tempFamily = new
 					{
 						usuario.Family.Id,
 						usuario.Family.Nome,
-						Membros = usuario.Family.Usuarios.Select(u => u.Nome).ToList()
+						Membros = membros
 					};
 					HttpContext.Session.SetString("FamiliaRegistrada", JsonSerializer.Serialize(tempFamily));
 				}
