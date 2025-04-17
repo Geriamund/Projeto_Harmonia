@@ -55,7 +55,7 @@ namespace Projeto_Harmonia.Controllers
 						usuario.Family.Nome,
 						Membros = usuario.Family.Usuarios.Select(u => u.Nome).ToList()
 					};
-					HttpContext.Session.SetString("FamiliaRegistrada", JsonSerializer.Serialize(tempUser));
+					HttpContext.Session.SetString("FamiliaRegistrada", JsonSerializer.Serialize(tempFamily));
 				}
 
 				HttpContext.Session.SetString("UsuarioLogado", JsonSerializer.Serialize(tempUser));
