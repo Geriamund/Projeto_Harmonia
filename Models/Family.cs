@@ -14,5 +14,12 @@ namespace Projeto_Harmonia.Models
 		public List<string> Membros { get; set; } = new();
 
 		public List<User> Usuarios { get; set; } = new();
+
+		public Family(string nome, List<string> membros)
+		{
+			Nome = nome;
+			Membros = membros;
+		}
+		public Family() { }
 	}
 }
