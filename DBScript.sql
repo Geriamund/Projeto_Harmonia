@@ -24,3 +24,13 @@ VALUES ('admin@admin', 'Administrador', 'AQAAAAIAAYagAAAAEDTZdaNFfGte51kkSGMfoJI
 
 INSERT INTO Users (Email, Nome, Senha)
 VALUES ('admin2@admin', 'Administrador2', 'AQAAAAIAAYagAAAAEDTZdaNFfGte51kkSGMfoJI+fQXwDMnpQdQEOQzy26Y159pHQrjIVgzBX6x8baOfVw=='); --senha: admin123
+
+INSERT INTO Families (Nome)
+VALUES('AdminFamily')
+
+UPDATE Users
+SET FamilyId = (
+    SELECT Id FROM Families WHERE Nome = 'AdminFamily'
+)
+
+WHERE Email IN ('admin@admin', 'admin2@admin');
