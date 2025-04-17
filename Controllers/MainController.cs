@@ -12,6 +12,17 @@ namespace Projeto_Harmonia.Controllers
 			if (usuarioJson == null)
 				return RedirectToAction("Index", "Login");
 			var usuario = JsonSerializer.Deserialize<User>(usuarioJson);
+			if (usuario.Family != null)
+			{
+
+			}
+			if (usuario.FamilyId != null)
+			{
+
+			}
+
+			//var usuario = await _db.Users.FirstOrDefaultAsync(user => user.Email == logModel.Email);
+			//HttpContext.Session.SetString("FamiliaRegistrada", JsonSerializer.Serialize(family));
 
 			return View(usuario);
 		}

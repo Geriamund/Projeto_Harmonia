@@ -21,3 +21,6 @@ REFERENCES "Families" ("Id");
 
 INSERT INTO Users (Email, Nome, Senha)
 VALUES ('admin@admin', 'Administrador', 'AQAAAAIAAYagAAAAEDTZdaNFfGte51kkSGMfoJI+fQXwDMnpQdQEOQzy26Y159pHQrjIVgzBX6x8baOfVw=='); --senha: admin123
+
+INSERT INTO Users (Email, Nome, Senha)
+VALUES ('admin2@admin', 'Administrador2', 'AQAAAAIAAYagAAAAEDTZdaNFfGte51kkSGMfoJI+fQXwDMnpQdQEOQzy26Y159pHQrjIVgzBX6x8baOfVw=='); --senha: admin123

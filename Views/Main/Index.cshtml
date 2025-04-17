@@ -1,9 +1,12 @@
 ﻿@using System.Text.Json
+@using System.Dynamic
+
 @model User
 @{
     ViewData["Title"] = "Main Page";
     var familyJson = Context.Session.GetString("FamiliaRegistrada");
-    var family = string.IsNullOrEmpty(familyJson) ? null : JsonSerializer.Deserialize<Family>(familyJson);
+    dynamic family = string.IsNullOrEmpty(familyJson) ? null : JsonSerializer.Deserialize<ExpandoObject>(familyJson);
+    
 }
 
 
@@ -12,7 +15,10 @@
     <p>Email: @Model.Email</p>
 </div>
 <div class="d-flex justify-content-center gap-3 my-4">
-    <a class="btn btn-primary w-100" asp-controller="Main" asp-action="FamReg">Registrar Família</a>
+    @if (family == null)
+    {
+        <a class="btn btn-primary w-100" asp-controller="Main" asp-action="FamReg">Registrar Família</a>
+    }
     <a class="@(family == null ? "btn btn-success w-100 disabled" : "btn btn-success w-100")" asp-controller="Rotina" asp-action="Index">Rotina</a>
     <a class="@(family == null ? "btn btn-warning w-100 disabled" : "btn btn-warning w-100")" asp-controller="Family" asp-action="Index">Gerenciar Familiar</a>
 </div>
@@ -23,6 +29,8 @@
     }
     else
     {
+        
         <p class="fw-bold">Familia: @family.Nome</p>
+        
     }
 </div>

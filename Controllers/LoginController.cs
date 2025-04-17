@@ -29,7 +29,7 @@ namespace Projeto_Harmonia.Controllers
 
 		public async Task<IActionResult> Login(LoginViewModel logModel)
 		{
-			var usuario = await _db.Users.FirstOrDefaultAsync(user => user.Email == logModel.Email);
+			var usuario = await _db.Users.Include(user => user.Family).FirstOrDefaultAsync(user => user.Email == logModel.Email);
 			if (usuario == null)
 			{
 				TempData["Erro"] = "Usuário não encontrado.";
@@ -39,7 +39,26 @@ namespace Projeto_Harmonia.Controllers
 			var resultado = _passH.VerifyHashedPassword(usuario, usuario.Senha, logModel.Senha);
 			if (resultado == PasswordVerificationResult.Success)
 			{
-				HttpContext.Session.SetString("UsuarioLogado", JsonSerializer.Serialize(usuario));
+				var tempUser = new
+				{
+					usuario.Id,
+					usuario.Nome,
+					usuario.Email,
+					usuario.FamilyId
+				};
+
+				if (usuario.Family != null)
+				{
+					var tempFamily = new
+					{
+						usuario.Family.Id,
+						usuario.Family.Nome,
+						Membros = usuario.Family.Usuarios.Select(u => u.Nome).ToList()
+					};
+					HttpContext.Session.SetString("FamiliaRegistrada", JsonSerializer.Serialize(tempUser));
+				}
+
+				HttpContext.Session.SetString("UsuarioLogado", JsonSerializer.Serialize(tempUser));
 				return RedirectToAction("Index", "Main");
 			}
 			TempData["Erro"] = "Senha incorreta.";
