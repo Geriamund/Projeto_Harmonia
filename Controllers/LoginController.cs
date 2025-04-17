@@ -46,25 +46,25 @@ namespace Projeto_Harmonia.Controllers
 			return RedirectToAction("Index", "Login");
 		}
 
-		[HttpPost]
-		public IActionResult LoginComoAdmin()
-		{
-			var usuario = new User
-			{
-				Nome = "Administrador",
-				Email = "admin@teste.com",
-				Senha = "admin123"
-			};
+		//[HttpPost]
+		//public IActionResult LoginComoAdmin()
+		//{
+		//	var usuario = new User
+		//	{
+		//		Nome = "Administrador",
+		//		Email = "admin@teste.com",
+		//		Senha = "admin123"
+		//	};
 
-			HttpContext.Session.SetString("UsuarioLogado", JsonSerializer.Serialize(usuario));
+		//	HttpContext.Session.SetString("UsuarioLogado", JsonSerializer.Serialize(usuario));
 
-			//HttpContext.Session.SetString("Teste", "Funcionou");
-			//var valor = HttpContext.Session.GetString("Teste");
-			//return Content($"Sessão: {valor}");
+		//	//HttpContext.Session.SetString("Teste", "Funcionou");
+		//	//var valor = HttpContext.Session.GetString("Teste");
+		//	//return Content($"Sessão: {valor}");
 
 
-			return RedirectToAction("Index", "Main");
-		}
+		//	return RedirectToAction("Index", "Main");
+		//}
 
 		[HttpPost]
 		public IActionResult Logout()

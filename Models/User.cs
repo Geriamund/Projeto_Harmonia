@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Projeto_Harmonia.Models
@@ -18,6 +19,11 @@ namespace Projeto_Harmonia.Models
 
 		[Required]
 		public string Senha { get; set; }
+
+		[ForeignKey("Family")]
+		public int? FamilyId { get; set; }
+
+		public Family Family { get; set; }
 
 		public User(string nome, string email, string senha)
 		{

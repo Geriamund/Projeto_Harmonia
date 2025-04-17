@@ -9,7 +9,5 @@ public class PHDbContext : DbContext
 {
 	public PHDbContext(DbContextOptions<PHDbContext> options) : base(options) { }
 	public DbSet<User> Users { get; set; }
-
-	//public DbSet<Tarefa> Tarefas { get; set; }
-	//public DbSet<Membro> Membros { get; set; } // Se tiver membros da família, por exemplo
+	public DbSet<Family> Families { get; set; }
 }
