@@ -6,16 +6,9 @@ using System.Text.Json;
 
 namespace Projeto_Harmonia.Controllers
 {
-	public class MainController : Controller
+	public class MainController(PHDbContext context) : Controller
 	{
-		private readonly PHDbContext _db;
-		private readonly PasswordHasher<User> _passH;
-
-		public MainController(PHDbContext context)
-		{
-			_db = context;
-			_passH = new PasswordHasher<User>();
-		}
+		private readonly PHDbContext _db = context;
 
 		public IActionResult Index()
 		{
@@ -32,7 +25,6 @@ namespace Projeto_Harmonia.Controllers
 			var usuarioJson = HttpContext.Session.GetString("UsuarioLogado");
 			if (usuarioJson == null)
 				return RedirectToAction("Index", "Login");
-			var usuario = JsonSerializer.Deserialize<User>(usuarioJson);
 			var fRVM = new FamRegViewModel();
 			return View(fRVM);
 		}
@@ -42,8 +34,6 @@ namespace Projeto_Harmonia.Controllers
 			var usuarioJson = HttpContext.Session.GetString("UsuarioLogado");
 			if (usuarioJson == null)
 				return RedirectToAction("Index", "Login");
-			var usuario = JsonSerializer.Deserialize<User>(usuarioJson);
-
 			return View();
 		}
 
@@ -53,13 +43,15 @@ namespace Projeto_Harmonia.Controllers
 			if (!ModelState.IsValid) return View(famModel);
 
 			var usuarioJson = HttpContext.Session.GetString("UsuarioLogado");
+			if (string.IsNullOrEmpty(usuarioJson))
+				return RedirectToAction("Index", "Login");
+
 			using var doc = JsonDocument.Parse(usuarioJson);
 			var nome = doc.RootElement.GetProperty("Nome").GetString();
 			var id = doc.RootElement.GetProperty("Id").GetInt32();
 
 			var usuario = await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
 			var novaFamilia = new Family(famModel.Nome, famModel.Membros);
-			
 
 			_db.Families.Add(novaFamilia);
 			await _db.SaveChangesAsync();
@@ -69,8 +61,8 @@ namespace Projeto_Harmonia.Controllers
 				usuario.FamilyId = novaFamilia.Id;
 				await _db.SaveChangesAsync();
 			}
-
-			novaFamilia.Membros.Add(nome);
+			if (nome != null)
+				novaFamilia.Membros.Add(nome);
 
 			var tempFamily = new
 			{
@@ -83,7 +75,5 @@ namespace Projeto_Harmonia.Controllers
 
 			return RedirectToAction("Index", "Main");
 		}
-		
-
 	}
 }
